@@ -1,0 +1,25 @@
+services:
+    backend:
+      container_name: 'aliaserver'
+      image: trangkiny/backend
+      build:
+       context: ./backend
+       dockerfile: Dockerfile
+      ports:
+        - 8080:80
+      depends_on:
+        - postgresdb
+      environment:
+        - ConnectionStrings__DefaultConnection=User Id=postgres;Password=mysecret2;Port=5432;Database=backend;Server=mypostgres;Ssl=true
+    postgresdb:
+     container_name: 'mypostgres'
+     restart: always
+     volumes:
+      - postgres-data:/var/lib/postgresql/data
+     image: postgres
+     environment:
+       POSTGRES_PASSWORD: mysecret2
+     ports:
+       - 5432:5432
+volumes:
+  postgres-data:
